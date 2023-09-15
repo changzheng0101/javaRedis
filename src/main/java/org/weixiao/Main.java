@@ -1,10 +1,13 @@
 package org.weixiao;
 
 
+import org.weixiao.struct.RedisDatabase;
+
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        RedisDatabase database = new RedisDatabase();
         Scanner scanner = new Scanner(System.in);
         String input;
         while (true) {
