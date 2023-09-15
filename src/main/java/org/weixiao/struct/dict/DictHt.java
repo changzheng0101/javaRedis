@@ -33,6 +33,9 @@ public class DictHt<V> {
             tmpEntry = tmpEntry.getNext();
         }
         // no key exist, put as a new entry
+        if (hashtable.get(index) == null) {
+            this.used++;
+        }
         DictEntry<V> dictEntry = new DictEntry<>(key, value, null);
         dictEntry.setNext(currentHeadDictEntry);
         hashtable.set(index, dictEntry);
@@ -67,6 +70,9 @@ public class DictHt<V> {
                     prev.setNext(next);
                 }
                 dictEntry.setNext(null);
+                if (hashtable.get(index) == null) {
+                    this.used--;
+                }
                 return true;
             }
             prev = dictEntry;

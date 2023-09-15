@@ -10,3 +10,9 @@ dict
 skiplist  
 intset 使用ArrayList实现  
 zipList 使用ArrayList实现
+## 已经实现命令
+- set
+- get
+- del
+- exists
+- 

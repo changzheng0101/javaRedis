@@ -28,10 +28,7 @@ public class Main {
             System.arraycopy(split, 1, arguments, 0, arguments.length);
             try {
                 if (Objects.equals(command, "auth")) {
-                    if (arguments.length != 1) {
-                        System.out.println("参数个数有误...");
-                        break;
-                    }
+                    if (!checkArgumentsNum(arguments, 1)) continue;
                     if (Objects.equals(arguments[0], "123456")) {
                         isAuth = true;
                         System.out.println("认证成功");
@@ -46,37 +43,30 @@ public class Main {
                 } else {
                     switch (command) {
                         case "set" -> {
-                            if (arguments.length != 2) {
-                                System.out.println("参数个数有误...");
-                                break;
-                            }
+                            if (!checkArgumentsNum(arguments, 2)) break;
                             String key = arguments[0];
                             String value = arguments[1];
                             databaseData.put(key, value);
                         }
                         case "get" -> {
-                            if (arguments.length != 1) {
-                                System.out.println("参数个数有误...");
-                                break;
-                            }
+                            if (!checkArgumentsNum(arguments, 1)) break;
                             String key = arguments[0];
                             System.out.println(databaseData.get(key));
                         }
                         case "del" -> {
-                            if (arguments.length != 1) {
-                                System.out.println("参数个数有误...");
-                                break;
-                            }
+                            if (!checkArgumentsNum(arguments, 1)) break;
                             String key = arguments[0];
                             System.out.println(databaseData.del(key));
                         }
                         case "exists" -> {
-                            if (arguments.length != 1) {
-                                System.out.println("参数个数有误...");
-                                break;
-                            }
+                            if (!checkArgumentsNum(arguments, 1)) break;
                             String key = arguments[0];
                             System.out.println(databaseData.exists(key));
+                        }
+                        case "flushall" -> {
+                            if (!checkArgumentsNum(arguments, 0)) break;
+                            database.setData(new DictHt<>());
+                            database.setExpireKeys(new DictHt<>());
                         }
                         default -> System.out.println("未知命令");
                     }
@@ -86,5 +76,13 @@ public class Main {
             }
         } while (!exit);
         scanner.close();
+    }
+
+    private static boolean checkArgumentsNum(String[] arguments, int length) {
+        if (arguments.length != length) {
+            System.out.println("参数个数有误...");
+            return false;
+        }
+        return true;
     }
 }
