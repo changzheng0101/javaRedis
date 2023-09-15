@@ -1,8 +1,6 @@
 package org.weixiao.struct.dict;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * dict hashtable
@@ -11,7 +9,7 @@ import java.util.List;
  * @Created by weixiao
  */
 public class DictHt<V> {
-    private List<DictEntry<V>> hashtable;
+    private final List<DictEntry<V>> hashtable;
     private int size;
     private int used;
 
@@ -24,7 +22,20 @@ public class DictHt<V> {
 
     public boolean put(String key, V value) {
         int index = getHashIndex(key);
-        hashtable.set(index, new DictEntry<>(key, value, null));
+        DictEntry<V> currentHeadDictEntry = hashtable.get(index);
+        // check key and set value if key exists
+        DictEntry<V> tmpEntry = currentHeadDictEntry;
+        while (tmpEntry != null) {
+            if (Objects.equals(tmpEntry.getKey(), key)) {
+                tmpEntry.setValue(value);
+                return true;
+            }
+            tmpEntry = tmpEntry.getNext();
+        }
+        // no key exist, put as a new entry
+        DictEntry<V> dictEntry = new DictEntry<>(key, value, null);
+        dictEntry.setNext(currentHeadDictEntry);
+        hashtable.set(index, dictEntry);
         return true;
     }
 
@@ -34,7 +45,45 @@ public class DictHt<V> {
 
     public V get(String key) {
         DictEntry<V> dictEntry = hashtable.get(getHashIndex(key));
-        if (dictEntry == null) return null;
-        return dictEntry.getValue();
+        while (dictEntry != null) {
+            if (Objects.equals(dictEntry.getKey(), key)) {
+                return dictEntry.getValue();
+            }
+            dictEntry = dictEntry.getNext();
+        }
+        return null;
+    }
+
+    public boolean del(String key) {
+        int index = getHashIndex(key);
+        DictEntry<V> dictEntry = hashtable.get(index);
+        DictEntry<V> prev = null;
+        while (dictEntry != null) {
+            if (Objects.equals(dictEntry.getKey(), key)) {
+                DictEntry<V> next = dictEntry.getNext();
+                if (prev == null) {
+                    hashtable.set(index, next);
+                } else {
+                    prev.setNext(next);
+                }
+                dictEntry.setNext(null);
+                return true;
+            }
+            prev = dictEntry;
+            dictEntry = dictEntry.getNext();
+        }
+        return false;
+    }
+
+    public boolean exists(String key) {
+        int index = getHashIndex(key);
+        DictEntry<V> headEntry = hashtable.get(index);
+        while (headEntry != null) {
+            if (Objects.equals(headEntry.getKey(), key)) {
+                return true;
+            }
+            headEntry = headEntry.getNext();
+        }
+        return false;
     }
 }

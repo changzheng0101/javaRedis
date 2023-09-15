@@ -7,12 +7,12 @@ package org.weixiao.struct.dict;
 public class DictEntry<V> {
     private String key;
     private V value;
-    private DictEntry<V> dictEntry;
+    private DictEntry<V> next;
 
-    public DictEntry(String key, V value, DictEntry<V> dictEntry) {
+    public DictEntry(String key, V value, DictEntry<V> next) {
         this.key = key;
         this.value = value;
-        this.dictEntry = dictEntry;
+        this.next = next;
     }
 
     public String getKey() {
@@ -31,11 +31,11 @@ public class DictEntry<V> {
         this.value = value;
     }
 
-    public DictEntry<V> getDictEntry() {
-        return dictEntry;
+    public DictEntry<V> getNext() {
+        return next;
     }
 
-    public void setDictEntry(DictEntry<V> dictEntry) {
-        this.dictEntry = dictEntry;
+    public void setNext(DictEntry<V> next) {
+        this.next = next;
     }
 }

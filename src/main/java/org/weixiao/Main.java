@@ -62,6 +62,22 @@ public class Main {
                             String key = arguments[0];
                             System.out.println(databaseData.get(key));
                         }
+                        case "del" -> {
+                            if (arguments.length != 1) {
+                                System.out.println("参数个数有误...");
+                                break;
+                            }
+                            String key = arguments[0];
+                            System.out.println(databaseData.del(key));
+                        }
+                        case "exists" -> {
+                            if (arguments.length != 1) {
+                                System.out.println("参数个数有误...");
+                                break;
+                            }
+                            String key = arguments[0];
+                            System.out.println(databaseData.exists(key));
+                        }
                         default -> System.out.println("未知命令");
                     }
                 }
