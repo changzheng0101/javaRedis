@@ -1,5 +1,6 @@
 package org.weixiao;
 
+
 import java.util.Scanner;
 
 public class Main {
