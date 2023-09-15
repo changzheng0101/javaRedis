@@ -42,6 +42,7 @@ public class Main {
                     throw new UnAuthException();
                 } else {
                     switch (command) {
+                        // base command
                         case "set" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String key = arguments[0];
@@ -68,6 +69,40 @@ public class Main {
                             database.setData(new DictHt<>());
                             database.setExpireKeys(new DictHt<>());
                         }
+                        // hash command
+                        case "hset" -> {
+                            if (!checkArgumentsNum(arguments, 3)) break;
+                            String hashName = arguments[0];
+                            String key = arguments[0];
+                            String value = arguments[0];
+                            databaseData.hset(hashName, key, value);
+                        }
+                        case "hget" -> {
+                            if (!checkArgumentsNum(arguments, 2)) break;
+                            String hashName = arguments[0];
+                            String key = arguments[0];
+                            databaseData.hget(hashName, key);
+                        }
+                        case "hgetall" -> {
+                            if (!checkArgumentsNum(arguments, 1)) break;
+                            String hashName = arguments[0];
+                            databaseData.hgetall(hashName);
+                        }
+                        case "hdel" -> {
+                            if (!checkArgumentsNum(arguments, 2)) break;
+                            String hashName = arguments[0];
+                            String key = arguments[0];
+                            databaseData.hdel(hashName, key);
+                        }
+                        case "hexists" -> {
+                            if (!checkArgumentsNum(arguments, 2)) break;
+                            String hashName = arguments[0];
+                            String key = arguments[0];
+                            databaseData.hexists(hashName, key);
+                        }
+                        // list command
+                        // set command
+                        // zset command
                         default -> System.out.println("未知命令");
                     }
                 }

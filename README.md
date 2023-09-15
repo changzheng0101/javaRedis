@@ -1,4 +1,5 @@
 # javaRedis
+> 私有仓库中，，，待开放
 
 用java实现Redis
 
@@ -15,4 +16,4 @@ zipList 使用ArrayList实现
 - get
 - del
 - exists
-- 
+- flushall
