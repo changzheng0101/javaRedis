@@ -44,4 +44,13 @@ public class RedisObjectUtil {
                 data
         );
     }
+
+    public static RedisObject wrapHashRedisObject(DictHt<RedisObject, RedisObject> data) {
+        return new RedisObject(
+                RedisObjectType.REDIS_HASH,
+                RedisObjectEncoding.REDIS_ENCODING_HT,
+                Instant.now(),
+                data
+        );
+    }
 }

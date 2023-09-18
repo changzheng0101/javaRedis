@@ -1,4 +1,5 @@
 # javaRedis
+
 > 私有仓库中，，，待开放
 
 用java实现Redis
@@ -11,9 +12,16 @@ dict
 skiplist  
 intset 使用ArrayList实现  
 zipList 使用ArrayList实现
+
 ## 已经实现命令
+
 - set
 - get
 - del
 - exists
 - flushall
+
+哈希表相关
+
+- hset 只支持3个参数
+- hget 

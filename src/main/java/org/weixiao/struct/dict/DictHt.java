@@ -13,11 +13,13 @@ import java.util.*;
  */
 public class DictHt<K, V> {
     private final List<DictEntry<K, V>> hashtable;
+    private final Set<K> keySet;
     private int size;
     private int used;
 
     public DictHt() {
         this.hashtable = new ArrayList<>(Collections.nCopies(10, null));
+        this.keySet = new HashSet<>();
         // ArrayList --> DEFAULT_CAPACITY
         this.size = 10;
         this.used = 0;
@@ -42,6 +44,7 @@ public class DictHt<K, V> {
         DictEntry<K, V> dictEntry = new DictEntry<>(key, value, null);
         dictEntry.setNext(currentHeadDictEntry);
         hashtable.set(index, dictEntry);
+        keySet.add(key);
         return true;
     }
 
@@ -76,6 +79,7 @@ public class DictHt<K, V> {
                 if (hashtable.get(index) == null) {
                     this.used--;
                 }
+                keySet.remove(key);
                 return true;
             }
             prev = dictEntry;
@@ -94,6 +98,10 @@ public class DictHt<K, V> {
             headEntry = headEntry.getNext();
         }
         return false;
+    }
+
+    public Set<K> keys() {
+        return this.keySet;
     }
 
     ///////////////////////////hash table////////////////////////////

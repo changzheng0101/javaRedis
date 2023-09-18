@@ -4,6 +4,10 @@ import org.weixiao.RedisObject;
 import org.weixiao.struct.dict.DictHt;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Set;
+
+import static org.weixiao.util.RedisObjectUtil.*;
 
 /**
  * @Date 2023/9/15 9:38
@@ -37,6 +41,16 @@ public class RedisDatabase {
     }
 
     public void hset(RedisObject hashName, RedisObject value) {
+        RedisObject redisObject = data.get(hashName);
+        if (redisObject != null) {
+            DictHt<RedisObject, RedisObject> originHashData = (DictHt<RedisObject, RedisObject>) redisObject.getData();
+            DictHt<RedisObject, RedisObject> newHashData = (DictHt<RedisObject, RedisObject>) value.getData();
+            Set<RedisObject> newHashDataKeys = newHashData.keys();
+            for (RedisObject key : newHashDataKeys) {
+                originHashData.put(key, newHashData.get(key));
+            }
+            value = wrapHashRedisObject(originHashData);
+        }
         data.put(hashName, value);
     }
 
