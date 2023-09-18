@@ -128,6 +128,40 @@ public class Main {
                             System.out.println(database.hexists(wrapStringRedisObject(hashName), wrapStringRedisObject(key)));
                         }
                         // list command
+                        case "lpush" -> {
+                            if (!checkArgumentsNum(arguments, 2)) break;
+                            String arrayName = arguments[0];
+                            String key = arguments[1];
+                            database.lpush(wrapStringRedisObject(arrayName), wrapStringRedisObject(key));
+                            System.out.println("ok");
+                        }
+                        case "rpush" -> {
+                            if (!checkArgumentsNum(arguments, 2)) break;
+                            String arrayName = arguments[0];
+                            String key = arguments[1];
+                            database.rpush(wrapStringRedisObject(arrayName), wrapStringRedisObject(key));
+                            System.out.println("ok");
+                        }
+                        case "lpop" -> {
+                            if (!checkArgumentsNum(arguments, 1)) break;
+                            String arrayName = arguments[0];
+                            RedisObject popValue = database.lpop(wrapStringRedisObject(arrayName));
+                            if (popValue != null) {
+                                System.out.println(parseStringRedisObject(popValue));
+                            } else {
+                                System.out.println("(nil)");
+                            }
+                        }
+                        case "rpop" -> {
+                            if (!checkArgumentsNum(arguments, 1)) break;
+                            String arrayName = arguments[0];
+                            RedisObject popValue = database.rpop(wrapStringRedisObject(arrayName));
+                            if (popValue != null) {
+                                System.out.println(parseStringRedisObject(popValue));
+                            } else {
+                                System.out.println("(nil)");
+                            }
+                        }
                         // set command
                         // zset command
                         default -> System.out.println("未知命令");

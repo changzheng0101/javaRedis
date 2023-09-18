@@ -4,8 +4,7 @@ import org.weixiao.RedisObject;
 import org.weixiao.struct.dict.DictHt;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 import static org.weixiao.util.RedisObjectUtil.*;
 
@@ -40,6 +39,7 @@ public class RedisDatabase {
         this.expireKeys = expireKeys;
     }
 
+    //////////////////////// hash command ///////////////////////////////
     public void hset(RedisObject hashName, RedisObject value) {
         RedisObject redisObject = data.get(hashName);
         if (redisObject != null) {
@@ -76,5 +76,48 @@ public class RedisDatabase {
         RedisObject redisObject = data.get(hashName);
         DictHt<RedisObject, RedisObject> data = (DictHt<RedisObject, RedisObject>) redisObject.getData();
         return data.exists(key);
+    }
+
+    //////////////////////// list command ///////////////////////////////
+    public void lpush(RedisObject listName, RedisObject value) {
+        RedisObject redisObject = data.get(listName);
+        LinkedList<RedisObject> redisObjects = new LinkedList<>();
+        if (redisObject != null) {
+            redisObjects = (LinkedList<RedisObject>) redisObject.getData();
+        }
+        redisObjects.addFirst(value);
+        data.put(listName, wrapLinkedListRedisObject(redisObjects));
+    }
+
+    public void rpush(RedisObject listName, RedisObject value) {
+        RedisObject redisObject = data.get(listName);
+        LinkedList<RedisObject> redisObjects = new LinkedList<>();
+        if (redisObject != null) {
+            redisObjects = (LinkedList<RedisObject>) redisObject.getData();
+        }
+        redisObjects.addLast(value);
+        data.put(listName, wrapLinkedListRedisObject(redisObjects));
+    }
+
+    public RedisObject lpop(RedisObject listName) {
+        RedisObject redisObject = data.get(listName);
+        if (redisObject != null) {
+            LinkedList<RedisObject> data = (LinkedList<RedisObject>) redisObject.getData();
+            if (data.size() > 0) {
+                return data.removeFirst();
+            }
+        }
+        return null;
+    }
+
+    public RedisObject rpop(RedisObject listName) {
+        RedisObject redisObject = data.get(listName);
+        if (redisObject != null) {
+            LinkedList<RedisObject> data = (LinkedList<RedisObject>) redisObject.getData();
+            if (data.size() > 0) {
+                return data.removeLast();
+            }
+        }
+        return null;
     }
 }

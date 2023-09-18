@@ -7,6 +7,8 @@ import org.weixiao.exceptions.MismatchRedisTypeException;
 import org.weixiao.struct.dict.DictHt;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * @Date 2023/9/18 10:27
@@ -49,6 +51,15 @@ public class RedisObjectUtil {
         return new RedisObject(
                 RedisObjectType.REDIS_HASH,
                 RedisObjectEncoding.REDIS_ENCODING_HT,
+                Instant.now(),
+                data
+        );
+    }
+
+    public static RedisObject wrapLinkedListRedisObject(LinkedList<RedisObject> data) {
+        return new RedisObject(
+                RedisObjectType.REDIS_LIST,
+                RedisObjectEncoding.REDIS_ENCODING_LINKED_LIST,
                 Instant.now(),
                 data
         );
