@@ -1,5 +1,6 @@
 package org.weixiao.struct;
 
+import org.weixiao.RedisObject;
 import org.weixiao.struct.dict.DictHt;
 
 import java.time.Instant;
@@ -10,28 +11,28 @@ import java.time.Instant;
  */
 public class RedisDatabase {
     // 数据库键空间，保存着数据库中的所有键值对
-    private DictHt<Object> data;
+    private DictHt<RedisObject, RedisObject> data;
     // 键的过期时间，字典的键为键，字典的值为过期时间
-    private DictHt<Instant> expireKeys;
+    private DictHt<RedisObject, Instant> expireKeys;
 
     public RedisDatabase() {
         this.data = new DictHt<>();
         this.expireKeys = new DictHt<>();
     }
 
-    public DictHt<Object> getData() {
+    public DictHt<RedisObject, RedisObject> getData() {
         return data;
     }
 
-    public void setData(DictHt<Object> data) {
+    public void setData(DictHt<RedisObject, RedisObject> data) {
         this.data = data;
     }
 
-    public DictHt<Instant> getExpireKeys() {
+    public DictHt<RedisObject, Instant> getExpireKeys() {
         return expireKeys;
     }
 
-    public void setExpireKeys(DictHt<Instant> expireKeys) {
+    public void setExpireKeys(DictHt<RedisObject, Instant> expireKeys) {
         this.expireKeys = expireKeys;
     }
 }

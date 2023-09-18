@@ -8,8 +8,8 @@ import java.util.*;
  * @Date 2023/9/15 9:01
  * @Created by weixiao
  */
-public class DictHt<V> {
-    private final List<DictEntry<V>> hashtable;
+public class DictHt<K, V> {
+    private final List<DictEntry<K, V>> hashtable;
     private int size;
     private int used;
 
@@ -20,11 +20,11 @@ public class DictHt<V> {
         this.used = 0;
     }
 
-    public boolean put(String key, V value) {
+    public boolean put(K key, V value) {
         int index = getHashIndex(key);
-        DictEntry<V> currentHeadDictEntry = hashtable.get(index);
+        DictEntry<K, V> currentHeadDictEntry = hashtable.get(index);
         // check key and set value if key exists
-        DictEntry<V> tmpEntry = currentHeadDictEntry;
+        DictEntry<K, V> tmpEntry = currentHeadDictEntry;
         while (tmpEntry != null) {
             if (Objects.equals(tmpEntry.getKey(), key)) {
                 tmpEntry.setValue(value);
@@ -36,18 +36,18 @@ public class DictHt<V> {
         if (hashtable.get(index) == null) {
             this.used++;
         }
-        DictEntry<V> dictEntry = new DictEntry<>(key, value, null);
+        DictEntry<K, V> dictEntry = new DictEntry<>(key, value, null);
         dictEntry.setNext(currentHeadDictEntry);
         hashtable.set(index, dictEntry);
         return true;
     }
 
-    private int getHashIndex(String key) {
-        return key.hashCode() % this.size;
+    private int getHashIndex(K key) {
+        return Math.abs(key.hashCode()) % this.size;
     }
 
-    public V get(String key) {
-        DictEntry<V> dictEntry = hashtable.get(getHashIndex(key));
+    public V get(K key) {
+        DictEntry<K, V> dictEntry = hashtable.get(getHashIndex(key));
         while (dictEntry != null) {
             if (Objects.equals(dictEntry.getKey(), key)) {
                 return dictEntry.getValue();
@@ -57,13 +57,13 @@ public class DictHt<V> {
         return null;
     }
 
-    public boolean del(String key) {
+    public boolean del(K key) {
         int index = getHashIndex(key);
-        DictEntry<V> dictEntry = hashtable.get(index);
-        DictEntry<V> prev = null;
+        DictEntry<K, V> dictEntry = hashtable.get(index);
+        DictEntry<K, V> prev = null;
         while (dictEntry != null) {
             if (Objects.equals(dictEntry.getKey(), key)) {
-                DictEntry<V> next = dictEntry.getNext();
+                DictEntry<K, V> next = dictEntry.getNext();
                 if (prev == null) {
                     hashtable.set(index, next);
                 } else {
@@ -81,9 +81,9 @@ public class DictHt<V> {
         return false;
     }
 
-    public boolean exists(String key) {
+    public boolean exists(K key) {
         int index = getHashIndex(key);
-        DictEntry<V> headEntry = hashtable.get(index);
+        DictEntry<K, V> headEntry = hashtable.get(index);
         while (headEntry != null) {
             if (Objects.equals(headEntry.getKey(), key)) {
                 return true;

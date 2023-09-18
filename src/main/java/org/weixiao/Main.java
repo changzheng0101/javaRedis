@@ -1,6 +1,8 @@
 package org.weixiao;
 
 
+import org.weixiao.common.RedisObjectEncoding;
+import org.weixiao.common.RedisObjectType;
 import org.weixiao.exceptions.UnAuthException;
 import org.weixiao.struct.RedisDatabase;
 import org.weixiao.struct.dict.DictHt;
@@ -12,8 +14,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         RedisDatabase database = new RedisDatabase();
-        DictHt<Object> databaseData = database.getData();
-        DictHt<Instant> databaseExpireKeys = database.getExpireKeys();
+        DictHt<RedisObject, RedisObject> databaseData = database.getData();
+        DictHt<RedisObject, Instant> expireKeys = database.getExpireKeys();
         boolean isAuth = false;
         boolean exit = false;
         Scanner scanner = new Scanner(System.in);
@@ -47,22 +49,30 @@ public class Main {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String key = arguments[0];
                             String value = arguments[1];
-                            databaseData.put(key, value);
+                            RedisObject stringRedisObject = new RedisObject(
+                                    RedisObjectType.REDIS_STRING,
+                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
+                                    Instant.now(),
+                                    value
+                            );
+                            databaseData.put(wrapStringRedisObject(key), stringRedisObject);
                         }
                         case "get" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
                             String key = arguments[0];
-                            System.out.println(databaseData.get(key));
+                            System.out.println(
+                                    parseStringRedisObject(databaseData.get(wrapStringRedisObject(key)))
+                            );
                         }
                         case "del" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
                             String key = arguments[0];
-                            System.out.println(databaseData.del(key));
+                            System.out.println(databaseData.del(wrapStringRedisObject(key)));
                         }
                         case "exists" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
                             String key = arguments[0];
-                            System.out.println(databaseData.exists(key));
+                            System.out.println(databaseData.exists(wrapStringRedisObject(key)));
                         }
                         case "flushall" -> {
                             if (!checkArgumentsNum(arguments, 0)) break;
@@ -75,7 +85,13 @@ public class Main {
                             String hashName = arguments[0];
                             String key = arguments[0];
                             String value = arguments[0];
-                            databaseData.hset(hashName, key, value);
+                            RedisObject stringRedisObject = new RedisObject(
+                                    RedisObjectType.REDIS_STRING,
+                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
+                                    Instant.now(),
+                                    value
+                            );
+                            databaseData.hset(hashName, key, stringRedisObject);
                         }
                         case "hget" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
@@ -92,13 +108,25 @@ public class Main {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String hashName = arguments[0];
                             String key = arguments[0];
-                            databaseData.hdel(hashName, key);
+                            RedisObject stringRedisObject = new RedisObject(
+                                    RedisObjectType.REDIS_STRING,
+                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
+                                    Instant.now(),
+                                    key
+                            );
+                            databaseData.hdel(hashName, stringRedisObject);
                         }
                         case "hexists" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String hashName = arguments[0];
                             String key = arguments[0];
-                            databaseData.hexists(hashName, key);
+                            RedisObject stringRedisObject = new RedisObject(
+                                    RedisObjectType.REDIS_STRING,
+                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
+                                    Instant.now(),
+                                    key
+                            );
+                            databaseData.hexists(hashName, stringRedisObject);
                         }
                         // list command
                         // set command
@@ -119,5 +147,22 @@ public class Main {
             return false;
         }
         return true;
+    }
+
+    private static String parseStringRedisObject(RedisObject redisObject) {
+        if (redisObject == null) {
+            return "(nil)";
+        }
+        return redisObject.getData().toString();
+    }
+
+
+    private static RedisObject wrapStringRedisObject(String value) {
+        return new RedisObject(
+                RedisObjectType.REDIS_STRING,
+                RedisObjectEncoding.REDIS_ENCODING_STRING,
+                Instant.now(),
+                value
+        );
     }
 }

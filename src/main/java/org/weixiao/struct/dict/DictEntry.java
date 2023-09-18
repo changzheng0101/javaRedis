@@ -4,22 +4,22 @@ package org.weixiao.struct.dict;
  * @Date 2023/9/15 9:00
  * @Created by weixiao
  */
-public class DictEntry<V> {
-    private String key;
+public class DictEntry<K, V> {
+    private K key;
     private V value;
-    private DictEntry<V> next;
+    private DictEntry<K, V> next;
 
-    public DictEntry(String key, V value, DictEntry<V> next) {
+    public DictEntry(K key, V value, DictEntry<K, V> next) {
         this.key = key;
         this.value = value;
         this.next = next;
     }
 
-    public String getKey() {
+    public K getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(K key) {
         this.key = key;
     }
 
@@ -31,11 +31,11 @@ public class DictEntry<V> {
         this.value = value;
     }
 
-    public DictEntry<V> getNext() {
+    public DictEntry<K, V> getNext() {
         return next;
     }
 
-    public void setNext(DictEntry<V> next) {
+    public void setNext(DictEntry<K, V> next) {
         this.next = next;
     }
 }
