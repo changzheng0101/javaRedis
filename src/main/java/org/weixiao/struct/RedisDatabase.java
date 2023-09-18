@@ -120,4 +120,29 @@ public class RedisDatabase {
         }
         return null;
     }
+
+    //////////////////////// set command ///////////////////////////////
+    public void sadd(RedisObject setName, RedisObject value) {
+        RedisObject redisObject = data.get(setName);
+        Set<RedisObject> hashSet = new HashSet<>();
+        if (redisObject != null) {
+            hashSet = (HashSet<RedisObject>) redisObject.getData();
+        }
+        hashSet.add(value);
+        data.put(setName, wrapHashSetRedisObject(hashSet));
+    }
+
+    public RedisObject smembers(RedisObject setName) {
+        return data.get(setName);
+    }
+
+    public void srem(RedisObject setName, RedisObject value) {
+        RedisObject redisObject = data.get(setName);
+        Set<RedisObject> hashSet = new HashSet<>();
+        if (redisObject != null) {
+            hashSet = (HashSet<RedisObject>) redisObject.getData();
+        }
+        hashSet.remove(value);
+        data.put(setName, wrapHashSetRedisObject(hashSet));
+    }
 }

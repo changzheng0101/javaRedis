@@ -8,7 +8,9 @@ import org.weixiao.struct.dict.DictHt;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * @Date 2023/9/18 10:27
@@ -60,6 +62,15 @@ public class RedisObjectUtil {
         return new RedisObject(
                 RedisObjectType.REDIS_LIST,
                 RedisObjectEncoding.REDIS_ENCODING_LINKED_LIST,
+                Instant.now(),
+                data
+        );
+    }
+
+    public static RedisObject wrapHashSetRedisObject(Set<RedisObject> data) {
+        return new RedisObject(
+                RedisObjectType.REDIS_SET,
+                RedisObjectEncoding.REDIS_ENCODING_HASH_SET,
                 Instant.now(),
                 data
         );

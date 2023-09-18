@@ -7,7 +7,9 @@ import org.weixiao.exceptions.UnAuthException;
 import org.weixiao.struct.RedisDatabase;
 import org.weixiao.struct.dict.DictHt;
 
+import java.lang.reflect.Member;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
@@ -52,20 +54,12 @@ public class Main {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String key = arguments[0];
                             String value = arguments[1];
-                            RedisObject stringRedisObject = new RedisObject(
-                                    RedisObjectType.REDIS_STRING,
-                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
-                                    Instant.now(),
-                                    value
-                            );
-                            databaseData.put(wrapStringRedisObject(key), stringRedisObject);
+                            databaseData.put(wrapStringRedisObject(key), wrapStringRedisObject(value));
                         }
                         case "get" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
                             String key = arguments[0];
-                            System.out.println(
-                                    parseStringRedisObject(databaseData.get(wrapStringRedisObject(key)))
-                            );
+                            System.out.println(parseStringRedisObject(databaseData.get(wrapStringRedisObject(key))));
                         }
                         case "del" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
@@ -88,18 +82,13 @@ public class Main {
                             String hashName = arguments[0];
                             String key = arguments[1];
                             String value = arguments[2];
-                            database.hset(
-                                    wrapStringRedisObject(hashName),
-                                    wrapHashRedisObject(key, value)
-                            );
+                            database.hset(wrapStringRedisObject(hashName), wrapHashRedisObject(key, value));
                         }
                         case "hget" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String hashName = arguments[0];
                             String key = arguments[1];
-                            System.out.println(parseStringRedisObject(
-                                    database.hget(wrapStringRedisObject(hashName), wrapStringRedisObject(key))
-                            ));
+                            System.out.println(parseStringRedisObject(database.hget(wrapStringRedisObject(hashName), wrapStringRedisObject(key))));
                         }
                         case "hgetall" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
@@ -163,6 +152,31 @@ public class Main {
                             }
                         }
                         // set command
+                        case "sadd" -> {
+                            if (!checkArgumentsNum(arguments, 2)) break;
+                            String setName = arguments[0];
+                            String value = arguments[1];
+                            database.sadd(wrapStringRedisObject(setName), wrapStringRedisObject(value));
+                        }
+                        case "smembers" -> {
+                            if (!checkArgumentsNum(arguments, 1)) break;
+                            String setName = arguments[0];
+                            RedisObject smembers = database.smembers(wrapStringRedisObject(setName));
+                            if (smembers == null) {
+                                System.out.println("(nil)");
+                            } else {
+                                HashSet<RedisObject> setData = (HashSet<RedisObject>) smembers.getData();
+                                for (RedisObject data : setData) {
+                                    System.out.println(parseStringRedisObject(data));
+                                }
+                            }
+                        }
+                        case "srem" -> {
+                            if (!checkArgumentsNum(arguments, 2)) break;
+                            String setName = arguments[0];
+                            String value = arguments[1];
+                            database.srem(wrapStringRedisObject(setName), wrapStringRedisObject(value));
+                        }
                         // zset command
                         default -> System.out.println("未知命令");
                     }

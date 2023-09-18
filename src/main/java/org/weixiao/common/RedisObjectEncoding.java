@@ -13,4 +13,5 @@ public enum RedisObjectEncoding {
     // ziplist and intset
     REDIS_ENCODING_ARRAY_LIST,
     REDIS_ENCODING_SKIP_LIST,
+    REDIS_ENCODING_HASH_SET,
 }
