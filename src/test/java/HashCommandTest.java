@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.weixiao.RedisObject;
 import org.weixiao.struct.RedisDatabase;
+import org.weixiao.struct.dict.DictHt;
 
 import static org.weixiao.util.RedisObjectUtil.*;
 
@@ -20,7 +21,7 @@ public class HashCommandTest {
     String value2 = "200";
 
     @Test
-    public void hsetAndHsetCommandTest() {
+    public void hsetAndHgetCommandTest() {
         database.hset(wrapStringRedisObject(hashName),
                 wrapHashRedisObject(key, value));
         // hget 
@@ -29,7 +30,7 @@ public class HashCommandTest {
     }
 
     @Test
-    public void multiHsetAndHsetCommandTest() {
+    public void multiHsetAndHgetCommandTest() {
         database.hset(wrapStringRedisObject(hashName),
                 wrapHashRedisObject(key, value));
         database.hset(wrapStringRedisObject(hashName),
@@ -39,5 +40,18 @@ public class HashCommandTest {
         Assertions.assertEquals(value, parseStringRedisObject(redisObject));
         redisObject = database.hget(wrapStringRedisObject(hashName), wrapStringRedisObject(key2));
         Assertions.assertEquals(value2, parseStringRedisObject(redisObject));
+    }
+
+    @Test
+    public void multiHsetAndHgetallCommandTest() {
+        database.hset(wrapStringRedisObject(hashName),
+                wrapHashRedisObject(key, value));
+        database.hset(wrapStringRedisObject(hashName),
+                wrapHashRedisObject(key2, value2));
+        // hget
+        RedisObject redisObject = database.hgetall(wrapStringRedisObject(hashName));
+        DictHt<RedisObject, RedisObject> data = (DictHt<RedisObject, RedisObject>) redisObject.getData();
+        Assertions.assertEquals(data.get(wrapStringRedisObject(key)).getData(), value);
+        Assertions.assertEquals(data.get(wrapStringRedisObject(key2)).getData(), value2);
     }
 }
