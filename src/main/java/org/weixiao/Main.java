@@ -1,13 +1,11 @@
 package org.weixiao;
 
 
-import org.weixiao.common.RedisObjectEncoding;
-import org.weixiao.common.RedisObjectType;
+import org.weixiao.common.RedisObject;
 import org.weixiao.exceptions.UnAuthException;
 import org.weixiao.struct.RedisDatabase;
 import org.weixiao.struct.dict.DictHt;
 
-import java.lang.reflect.Member;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;

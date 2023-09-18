@@ -1,6 +1,6 @@
 package org.weixiao.struct;
 
-import org.weixiao.RedisObject;
+import org.weixiao.common.RedisObject;
 import org.weixiao.struct.dict.DictHt;
 
 import java.time.Instant;

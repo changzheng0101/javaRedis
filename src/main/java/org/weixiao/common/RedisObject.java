@@ -1,7 +1,4 @@
-package org.weixiao;
-
-import org.weixiao.common.RedisObjectEncoding;
-import org.weixiao.common.RedisObjectType;
+package org.weixiao.common;
 
 import java.time.Instant;
 import java.util.Objects;

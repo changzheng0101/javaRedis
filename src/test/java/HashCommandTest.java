@@ -1,6 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.weixiao.RedisObject;
+import org.weixiao.common.RedisObject;
 import org.weixiao.struct.RedisDatabase;
 import org.weixiao.struct.dict.DictHt;
 

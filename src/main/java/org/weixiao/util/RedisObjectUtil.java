@@ -1,14 +1,12 @@
 package org.weixiao.util;
 
-import org.weixiao.RedisObject;
+import org.weixiao.common.RedisObject;
 import org.weixiao.common.RedisObjectEncoding;
 import org.weixiao.common.RedisObjectType;
 import org.weixiao.exceptions.MismatchRedisTypeException;
 import org.weixiao.struct.dict.DictHt;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
