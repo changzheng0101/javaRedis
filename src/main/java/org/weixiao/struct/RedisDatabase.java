@@ -35,4 +35,14 @@ public class RedisDatabase {
     public void setExpireKeys(DictHt<RedisObject, Instant> expireKeys) {
         this.expireKeys = expireKeys;
     }
+
+    public void hset(RedisObject hashName, RedisObject value) {
+        data.put(hashName, value);
+    }
+
+    public RedisObject hget(RedisObject hashName, RedisObject key) {
+        RedisObject redisObject = data.get(hashName);
+        DictHt<RedisObject, RedisObject> data = (DictHt<RedisObject, RedisObject>) redisObject.getData();
+        return data.get(key);
+    }
 }

@@ -1,5 +1,8 @@
 package org.weixiao.struct.dict;
 
+import org.weixiao.RedisObject;
+
+import java.security.Key;
 import java.util.*;
 
 /**
@@ -95,15 +98,6 @@ public class DictHt<K, V> {
 
     ///////////////////////////hash table////////////////////////////
     // hashName just like key in `set key value`
-    public void hset(String hashName, String key, V value) {
-
-    }
-
-    public void hget(String hashName, String key) {
-
-    }
-
-
     public void hgetall(String hashName) {
 
     }

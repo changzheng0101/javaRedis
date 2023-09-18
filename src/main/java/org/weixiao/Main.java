@@ -11,6 +11,8 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static org.weixiao.util.RedisObjectUtil.*;
+
 public class Main {
     public static void main(String[] args) {
         RedisDatabase database = new RedisDatabase();
@@ -83,21 +85,20 @@ public class Main {
                         case "hset" -> {
                             if (!checkArgumentsNum(arguments, 3)) break;
                             String hashName = arguments[0];
-                            String key = arguments[0];
-                            String value = arguments[0];
-                            RedisObject stringRedisObject = new RedisObject(
-                                    RedisObjectType.REDIS_STRING,
-                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
-                                    Instant.now(),
-                                    value
+                            String key = arguments[1];
+                            String value = arguments[2];
+                            database.hset(
+                                    wrapStringRedisObject(hashName),
+                                    wrapHashRedisObject(key, value)
                             );
-                            databaseData.hset(hashName, key, stringRedisObject);
                         }
                         case "hget" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String hashName = arguments[0];
-                            String key = arguments[0];
-                            databaseData.hget(hashName, key);
+                            String key = arguments[1];
+                            System.out.println(parseStringRedisObject(
+                                    database.hget(wrapStringRedisObject(hashName), wrapStringRedisObject(key))
+                            ));
                         }
                         case "hgetall" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
@@ -149,20 +150,5 @@ public class Main {
         return true;
     }
 
-    private static String parseStringRedisObject(RedisObject redisObject) {
-        if (redisObject == null) {
-            return "(nil)";
-        }
-        return redisObject.getData().toString();
-    }
 
-
-    private static RedisObject wrapStringRedisObject(String value) {
-        return new RedisObject(
-                RedisObjectType.REDIS_STRING,
-                RedisObjectEncoding.REDIS_ENCODING_STRING,
-                Instant.now(),
-                value
-        );
-    }
 }
