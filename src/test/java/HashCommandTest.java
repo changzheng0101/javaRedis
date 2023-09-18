@@ -54,4 +54,23 @@ public class HashCommandTest {
         Assertions.assertEquals(data.get(wrapStringRedisObject(key)).getData(), value);
         Assertions.assertEquals(data.get(wrapStringRedisObject(key2)).getData(), value2);
     }
+
+    @Test
+    public void hexistsCommandTest() {
+        database.hset(wrapStringRedisObject(hashName),
+                wrapHashRedisObject(key, value));
+        Assertions.assertTrue(database.hexists(wrapStringRedisObject(hashName), wrapStringRedisObject(key)));
+        Assertions.assertFalse(database.hexists(wrapStringRedisObject(hashName), wrapStringRedisObject(key2)));
+    }
+
+    @Test
+    public void hdelCommandTest() {
+        database.hset(wrapStringRedisObject(hashName),
+                wrapHashRedisObject(key, value));
+        database.hset(wrapStringRedisObject(hashName),
+                wrapHashRedisObject(key2, value2));
+        database.hdel(wrapStringRedisObject(hashName), wrapStringRedisObject(key2));
+        Assertions.assertTrue(database.hexists(wrapStringRedisObject(hashName), wrapStringRedisObject(key)));
+        Assertions.assertFalse(database.hexists(wrapStringRedisObject(hashName), wrapStringRedisObject(key2)));
+    }
 }

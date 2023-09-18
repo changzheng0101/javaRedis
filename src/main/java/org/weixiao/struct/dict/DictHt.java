@@ -103,17 +103,4 @@ public class DictHt<K, V> {
     public Set<K> keys() {
         return this.keySet;
     }
-
-    ///////////////////////////hash table////////////////////////////
-    // hashName just like key in `set key value`
-    public void hgetall(String hashName) {
-
-    }
-
-    public void hdel(String hashName, V key) {
-
-    }
-
-    public void hexists(String hashName, V key) {
-    }
 }

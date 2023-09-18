@@ -114,26 +114,18 @@ public class Main {
                         case "hdel" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String hashName = arguments[0];
-                            String key = arguments[0];
-                            RedisObject stringRedisObject = new RedisObject(
-                                    RedisObjectType.REDIS_STRING,
-                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
-                                    Instant.now(),
-                                    key
-                            );
-                            databaseData.hdel(hashName, stringRedisObject);
+                            String key = arguments[1];
+                            if (database.hdel(wrapStringRedisObject(hashName), wrapStringRedisObject(key))) {
+                                System.out.println("true");
+                            } else {
+                                System.out.println("false");
+                            }
                         }
                         case "hexists" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
                             String hashName = arguments[0];
-                            String key = arguments[0];
-                            RedisObject stringRedisObject = new RedisObject(
-                                    RedisObjectType.REDIS_STRING,
-                                    RedisObjectEncoding.REDIS_ENCODING_STRING,
-                                    Instant.now(),
-                                    key
-                            );
-                            databaseData.hexists(hashName, stringRedisObject);
+                            String key = arguments[1];
+                            System.out.println(database.hexists(wrapStringRedisObject(hashName), wrapStringRedisObject(key)));
                         }
                         // list command
                         // set command

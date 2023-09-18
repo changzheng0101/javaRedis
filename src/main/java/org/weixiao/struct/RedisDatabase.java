@@ -63,4 +63,18 @@ public class RedisDatabase {
     public RedisObject hgetall(RedisObject hashName) {
         return data.get(hashName);
     }
+
+    public boolean hdel(RedisObject hashName, RedisObject key) {
+        RedisObject redisObject = data.get(hashName);
+        DictHt<RedisObject, RedisObject> data = (DictHt<RedisObject, RedisObject>) redisObject.getData();
+        data.del(key);
+        return true;
+    }
+
+
+    public boolean hexists(RedisObject hashName, RedisObject key) {
+        RedisObject redisObject = data.get(hashName);
+        DictHt<RedisObject, RedisObject> data = (DictHt<RedisObject, RedisObject>) redisObject.getData();
+        return data.exists(key);
+    }
 }
