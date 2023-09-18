@@ -59,4 +59,8 @@ public class RedisDatabase {
         DictHt<RedisObject, RedisObject> data = (DictHt<RedisObject, RedisObject>) redisObject.getData();
         return data.get(key);
     }
+
+    public RedisObject hgetall(RedisObject hashName) {
+        return data.get(hashName);
+    }
 }

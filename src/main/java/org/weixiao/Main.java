@@ -10,6 +10,7 @@ import org.weixiao.struct.dict.DictHt;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 
 import static org.weixiao.util.RedisObjectUtil.*;
 
@@ -103,7 +104,12 @@ public class Main {
                         case "hgetall" -> {
                             if (!checkArgumentsNum(arguments, 1)) break;
                             String hashName = arguments[0];
-                            databaseData.hgetall(hashName);
+                            RedisObject redisObject = database.hgetall(wrapStringRedisObject(hashName));
+                            DictHt<RedisObject, RedisObject> hashData = (DictHt<RedisObject, RedisObject>) redisObject.getData();
+                            Set<RedisObject> keys = hashData.keys();
+                            for (RedisObject key : keys) {
+                                System.out.println("key:" + parseStringRedisObject(key) + " value:" + parseStringRedisObject(hashData.get(key)));
+                            }
                         }
                         case "hdel" -> {
                             if (!checkArgumentsNum(arguments, 2)) break;
