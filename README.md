@@ -46,6 +46,12 @@
 - smembers setName 查看集合中的元素
 - srem setName value
 
+## 功能
+
+### aof
+
+实现断点不丢失，通过aof文件的方式
+
 ## 开源说明
 
 本项目作者：weixiao
